@@ -1,23 +1,30 @@
-const ctx = document.getElementById('chart');
 const xLabels = []
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: xLabels,
-      datasets: [{
-        label: 'Global Average Temperature',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
+const yTemps = []
+
+async function chartIt() {
+    await getData()
+    const ctx = document.getElementById('chart');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+        labels: xLabels,
+        datasets: [{
+            label: 'Global Average Temperature',
+            data: yTemps,
+            borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: false
+            }
         }
-      }
-    }
-  });
+        }
+    });
+}
+
+chartIt()
 
 async function getData() {
     response = await fetch("ZonAnn.Ts+dSST.csv")
@@ -27,7 +34,9 @@ async function getData() {
     table.forEach(row => {
         const columns = row.split(',')
         const year = columns[0]
+        xLabels.push(year)
         const temperature = columns[1]
+        yTemps.push(parseFloat(temperature) + 14)
         console.log(year, temperature)
     })
 }
