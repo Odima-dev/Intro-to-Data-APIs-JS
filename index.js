@@ -7,7 +7,7 @@ async function getData() {
         const columns = row.split(',')
         const year = columns[0]
         const temperature = columns[1]
-        console.log(columns)
+        console.log(year, temperature)
     })
 }
 
