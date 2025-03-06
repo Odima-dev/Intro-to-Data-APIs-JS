@@ -1,3 +1,24 @@
+const ctx = document.getElementById('chart');
+const xLabels = []
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: xLabels,
+      datasets: [{
+        label: 'Global Average Temperature',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
 async function getData() {
     response = await fetch("ZonAnn.Ts+dSST.csv")
     const data = await response.text()
