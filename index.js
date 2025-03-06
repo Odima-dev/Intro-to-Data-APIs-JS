@@ -1,16 +1,13 @@
-const xLabels = []
-const yTemps = []
-
 async function chartIt() {
-    await getData()
-    const ctx = document.getElementById('chart');
+    const data = await getData()
+    const ctx = document.getElementById('chart'); 
     new Chart(ctx, {
         type: 'line',
         data: {
-        labels: xLabels,
+        labels: data.xs,
         datasets: [{
-            label: 'Global Average Temperature',
-            data: yTemps,
+            label: 'Combined Land-Surface Air and Sea-Surface Water Temperature in oC',
+            data: data.ys,
             borderWidth: 1
         }]
         },
@@ -27,6 +24,9 @@ async function chartIt() {
 chartIt()
 
 async function getData() {
+    const xs = []
+    const ys = []
+
     response = await fetch("ZonAnn.Ts+dSST.csv")
     const data = await response.text()
     const table = data.split('\n').slice(1)
@@ -34,11 +34,12 @@ async function getData() {
     table.forEach(row => {
         const columns = row.split(',')
         const year = columns[0]
-        xLabels.push(year)
+        xs.push(year)
         const temperature = columns[1]
-        yTemps.push(parseFloat(temperature) + 14)
+        ys.push(parseFloat(temperature) + 14)
         console.log(year, temperature)
     })
+    return{xs, ys}
 }
 
 getData()
